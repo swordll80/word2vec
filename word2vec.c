@@ -18,11 +18,20 @@
 #include <math.h>
 #include <pthread.h>
 
+#ifdef _WIN32 // 如果是 Windows 平台
+#include <malloc.h> // 包含 _aligned_malloc 的头文件
+#define posix_memalign(p, a, s) (((*(p) = _aligned_malloc(s, a)) == NULL) ? errno = ENOMEM, -1 : 0)
+#define fgetc_unlocked fgetc
+#else
+#include <stdlib.h> // 其他平台包含 stdlib.h
+#endif
+
 #define MAX_STRING 100
 #define EXP_TABLE_SIZE 1000
 #define MAX_EXP 6
 #define MAX_SENTENCE_LENGTH 1000
 #define MAX_CODE_LENGTH 40
+
 
 const int vocab_hash_size = 30000000;  // Maximum 30 * 0.7 = 21M words in the vocabulary
 

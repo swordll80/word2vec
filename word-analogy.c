@@ -17,9 +17,15 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef _WIN32
+#define max_size ((long long)2000)          // max length of strings
+#define N  ((long long)40)                  // number of closest words that will be shown
+#define max_w  ((long long)50)              // max length of vocabulary entries
+#else
 const long long max_size = 2000;         // max length of strings
 const long long N = 40;                  // number of closest words that will be shown
 const long long max_w = 50;              // max length of vocabulary entries
+#endif
 
 int main(int argc, char **argv) {
   FILE *f;

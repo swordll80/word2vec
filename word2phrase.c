@@ -18,7 +18,14 @@
 #include <math.h>
 #include <pthread.h>
 
+#ifdef _WIN32 // 如果是 Windows 平台
+#define fgetc_unlocked fgetc
+#define fputc_unlocked fputc
+#else
+#endif
+
 #define MAX_STRING 60
+
 
 const int vocab_hash_size = 500000000; // Maximum 500M entries in the vocabulary
 
