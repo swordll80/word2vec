@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON) # 强制使用指定的标准
 
 # 设置 C 编译选项，添加必要的警告和优化
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra") # linux
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4") # Windows release 下使用 /W4 和 /O2
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4") # Windows release 下使用 /W4 和 /O2
 if(CMAKE_BUILD_TYPE EQUAL "x64-Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Od") # Debug 模式下使用 /Od
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MDd") # Debug 模式
@@ -62,3 +62,23 @@ configure_file(questions-phrases.txt ${CMAKE_BINARY_DIR}/questions-phrases.txt C
 #     COMMAND ${CMAKE_COMMAND} -E echo "运行 demo 脚本 (请手动执行)"
 # )
 # add_dependencies(run_demos word2vec word2phrase distance word-analogy compute-accuracy) # 依赖于可执行文件的构建
+
+
+# 获取 CMakeLists.txt 所在的目录
+get_filename_component(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
+
+message(STATUS "Target file path: $<TARGET_FILE:${target}>")
+message(STATUS "Project directory: ${PROJECT_DIR}")
+
+
+# 循环处理每个可执行文件
+foreach(target word2vec word2phrase distance word-analogy compute-accuracy)
+    add_custom_command(
+        TARGET ${target}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_FILE:${target}>
+            ${PROJECT_DIR}
+        COMMENT "Copying $<CONFIG> executable ${target} to project directory"
+    )
+endforeach()
