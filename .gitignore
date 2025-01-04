@@ -3,11 +3,14 @@
 ################################################################################
 
 /.vs
+/build/.vs
 /out
+/build/bin
+/build/CMakeFiles
+/build/*.dir
+/build/Debug
+/build/Release
+/build/x64
+/*.exe
 /text8
-/compute-accuracy.exe
-/distance.exe
-/word-analogy.exe
-/word2phrase.exe
-/word2vec.exe
 /vectors.bin
