@@ -3,4 +3,11 @@
 ################################################################################
 
 /.vs
-/out/build
+/out
+/text8
+/compute-accuracy.exe
+/distance.exe
+/word-analogy.exe
+/word2phrase.exe
+/word2vec.exe
+/vectors.bin
