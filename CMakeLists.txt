@@ -9,12 +9,12 @@ set(CMAKE_C_STANDARD_REQUIRED ON) # 强制使用指定的标准
 # 设置 C 编译选项，添加必要的警告和优化
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra") # linux
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4") # Windows release 下使用 /W4 和 /O2
-if(CMAKE_BUILD_TYPE EQUAL "x64-Debug")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Od") # Debug 模式下使用 /Od
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MDd") # Debug 模式
+if(CMAKE_BUILD_TYPE EQUAL "Debug")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Od")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MDd")
 else()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /O2") # Release 模式下使用 /O2
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MD")  # Release 模式
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /O2")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MD")
 endif()
 
 # 创建可执行目标 (必须在链接库之前)
@@ -25,8 +25,8 @@ add_executable(word-analogy word-analogy.c)
 add_executable(compute-accuracy compute-accuracy.c)
 
 # 查找 pthreads 库
-find_path(PTHREADS_INCLUDE_DIR NAMES pthread.h HINTS "./pthreads-win32/include") # 修改为你的 pthreads 解压路径
-find_library(PTHREADS_LIBRARY NAMES pthreadVC3 HINTS "./pthreads-win32/lib/x64") # 修改为你的 pthreads 解压路径，注意根据位数选择x86或x64
+find_path(PTHREADS_INCLUDE_DIR NAMES pthread.h HINTS "./pthreads-win32/include")
+find_library(PTHREADS_LIBRARY NAMES pthreadVC3 HINTS "./pthreads-win32/lib/x64")
 
 if(PTHREADS_INCLUDE_DIR AND PTHREADS_LIBRARY)
     include_directories(${PTHREADS_INCLUDE_DIR})
@@ -67,12 +67,11 @@ configure_file(questions-phrases.txt ${CMAKE_BINARY_DIR}/questions-phrases.txt C
 # 获取 CMakeLists.txt 所在的目录
 get_filename_component(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 
-message(STATUS "Target file path: $<TARGET_FILE:${target}>")
 message(STATUS "Project directory: ${PROJECT_DIR}")
-
 
 # 循环处理每个可执行文件
 foreach(target word2vec word2phrase distance word-analogy compute-accuracy)
+    message(STATUS "Target file path: $<TARGET_FILE:${target}>")
     add_custom_command(
         TARGET ${target}
         POST_BUILD
